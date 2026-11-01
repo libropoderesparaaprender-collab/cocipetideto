@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poderes para Aprender — Gimnasia Para Tu Cerebro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Outfit:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    keyframes: {
+                        pulse2s: {
+                            '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+                            '50%': { opacity: '0.4', transform: 'scale(0.98)' }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    },
+                    animation: {
+                        'pulse-2s': 'pulse2s 2s infinite ease-in-out',
+                        'fadeIn': 'fadeIn 0.35s ease-out forwards'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #fef3c7 100%);
+            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .btn-cocipetideto {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn-cocipetideto:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+        }
+        .btn-cocipetideto:active {
+            transform: translateY(1px) scale(0.98);
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between antialiased">
+
+    <header id="mainHeader" class="sticky top-0 z-50 glass-header shadow-md transition-all duration-300">
+        <div id="headerContainer" class="max-w-7xl mx-auto px-3 sm:px-6 py-3 transition-all duration-300">
+            
+            <!-- Barra Superior Fija: Reloj Actual, Botón Gimnasia Mental y Contador de Tiempo -->
+            <div id="topPersistentBar" class="flex flex-col sm:flex-row items-center justify-between gap-3 transition-all duration-300">
+                
+                <!-- Reloj en Vivo -->
+                <div id="clockContainer" class="flex items-center gap-2.5 bg-slate-900 text-amber-400 px-4 sm:px-6 py-2 sm:py-3 rounded-2xl shadow-inner font-mono font-black border-2 border-slate-700 w-full sm:w-auto justify-center">
+                    <i class="fa-regular fa-clock animate-spin text-lg sm:text-2xl" style="animation-duration: 8s;"></i>
+                    <span class="text-xs sm:text-base text-slate-300 font-bold">HORA:</span>
+                    <span id="liveClock" class="text-xl sm:text-3xl text-white tracking-widest font-black">00:00:00</span>
+                </div>
+
+                <!-- Botón Aprender = Gimnasia Mental -->
+                <button onclick="showContent('GIMNASIA')" 
+                        class="animate-pulse-2s group inline-flex flex-col items-center justify-center gap-1 bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-600 hover:from-emerald-600 hover:to-cyan-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-2xl font-black text-xs sm:text-base shadow-xl border-2 border-emerald-300 transition-all cursor-pointer w-full sm:w-auto uppercase tracking-wide hover:scale-105">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-brain text-amber-300 text-base sm:text-xl"></i>
+                        <span>APRENDER = GIMNASIA MENTAL</span>
+                    </div>
+                    <span class="text-[10px] sm:text-xs font-black text-amber-300 tracking-widest bg-slate-950/40 px-3 py-0.5 rounded-full border border-amber-300/40">
+                        I.A. (INTELIGENCIA ARTIFICIAL)
+                    </span>
+                </button>
+
+                <!-- Contador de Tiempo (Poder 1) -->
+                <div id="timerContainer" class="animate-pulse-2s flex items-center justify-center w-full sm:w-auto">
+                    <button id="btnTimerToggle" onclick="toggleTimer()" 
+                            class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-2xl font-black text-xs sm:text-base shadow-lg hover:shadow-orange-300 transition-all cursor-pointer border-2 border-amber-300/60">
+                        <i id="timerIcon" class="fa-solid fa-play text-amber-200 text-base sm:text-xl"></i>
+                        <span class="uppercase tracking-wide hidden md:inline">Poder 1: Tiempo</span>
+                        <span id="timerDisplay" class="bg-black/50 px-3 py-1 rounded-xl font-mono text-xl sm:text-3xl text-yellow-300 border border-yellow-400/40 font-black">00:00</span>
+                    </button>
+                    <button onclick="openTimerFullscreen()" title="Pantalla Completa Contador" class="ml-2 text-sm sm:text-base bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-3.5 py-2 sm:py-2.5 rounded-xl border-2 border-amber-300 shadow-md transition-all active:scale-95 flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-expand text-base sm:text-xl"></i>
+                        <span class="hidden lg:inline text-xs font-extrabold uppercase">PANTALLA COMPLETA</span>
+                    </button>
+                    <button onclick="resetTimer()" title="Reiniciar Contador" class="ml-1 text-sm sm:text-base text-slate-500 hover:text-red-600 p-2 transition-colors">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Título del Libro y Botón Portada -->
+            <div id="headerTitleSection" class="mt-3 pt-3 border-t border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-3 transition-all duration-300">
+                <div class="text-center md:text-left flex-1">
+                    <button onclick="openBookModal()" class="group text-left focus:outline-none transition-transform hover:scale-[1.01]">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black bg-indigo-100 text-indigo-700 uppercase tracking-widest mb-1">
+                            Gregorio Gómez Pérez
+                        </span>
+                        <h1 class="text-base sm:text-xl lg:text-2xl font-black text-slate-900 leading-tight font-heading group-hover:text-indigo-600 transition-colors flex items-center gap-2">
+                            <span>PODERES PARA APRENDER – P.P.A.</span>
+                            <i class="fa-solid fa-book-open text-indigo-500 text-sm opacity-80 group-hover:opacity-100"></i>
+                        </h1>
+                        <p class="text-xs sm:text-sm font-bold text-rose-600 tracking-wide">
+                            “Gimnasia Para tu Cerebro”
+                        </p>
+                    </button>
+                </div>
+
+                <!-- Botón Imagen del Libro (ppa.jpg) -->
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="openBookModal()" class="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-md transition-all active:scale-95 border border-indigo-400/30 uppercase tracking-wider">
+                        <i class="fa-solid fa-book-bookmark text-amber-300 text-sm"></i>
+                        <span>PORTADA LIBRO P.P.A.</span>
+                    </button>
+                    <input type="file" id="coverFileInput" accept="image/*" class="hidden" onchange="handleCoverUpload(event)">
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full flex flex-col justify-center">
+
+        <!-- VISTA MODO PRESENTACIÓN PANTALLA COMPLETA -->
+        <section id="fullPowerScreen" class="hidden min-h-[82vh] w-full flex flex-col justify-between bg-white/95 backdrop-blur-xl rounded-3xl p-5 sm:p-10 shadow-2xl border-4 border-indigo-300 transition-all duration-300 relative my-auto animate-fadeIn">
+            
+            <!-- Barra Superior del Poder: Botón de Retorno -->
+            <div class="flex items-center justify-between border-b-2 border-slate-100 pb-4 mb-6">
+                <button onclick="goBackToMenu()" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-base px-5 py-2.5 rounded-2xl shadow-lg hover:shadow-indigo-300 transition-all active:scale-95 cursor-pointer">
+                    <i class="fa-solid fa-arrow-left text-amber-400"></i>
+                    <span>VOLVER AL MENÚ PRINCIPAL</span>
+                </button>
+
+                <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+                    Modo Presentación
+                </span>
+            </div>
+
+            <!-- Contenido Dinámico Ocupando el Espacio Principal -->
+            <div id="fullPowerContent" class="flex-1 flex flex-col justify-center items-center my-auto w-full max-w-5xl mx-auto">
+                <!-- Se inyecta dinámicamente -->
+            </div>
+
+            <!-- Botón de Retorno Inferior -->
+            <div class="pt-6 mt-6 border-t-2 border-slate-100 flex justify-center">
+                <button onclick="goBackToMenu()" class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-700 hover:to-purple-800 text-white font-black text-sm sm:text-lg px-8 py-3.5 rounded-2xl shadow-xl hover:shadow-indigo-400 transition-all active:scale-95 cursor-pointer">
+                    <i class="fa-solid fa-circle-arrow-left text-amber-300 text-xl"></i>
+                    <span>VOLVER AL MENÚ</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- MENÚ PRINCIPAL CON TODOS LOS BOTONES -->
+        <div id="mainMenu" class="flex flex-col gap-6 w-full animate-fadeIn">
+
+            <!-- SECCIÓN 1: WORD "COCIPETIDETO" (6 BOTONES EN FILA) -->
+            <section class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-600 flex items-center gap-2">
+                        <i class="fa-solid fa-cubes text-indigo-500"></i>
+                        <span>Secuencia de Poderes (Palabra Clave)</span>
+                    </h3>
+                    <span class="text-[11px] font-extrabold bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-300">
+                        C O C I P E T I D E T O
+                    </span>
+                </div>
+
+                <!-- Grid de 6 botones grandes -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                    <!-- CO -->
+                    <button onclick="showContent('CO')" class="btn-cocipetideto bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 border border-blue-400">
+                        <span class="text-3xl sm:text-4xl font-black font-heading tracking-wider">CO</span>
+                        <span class="text-[10px] sm:text-xs font-semibold opacity-90 uppercase tracking-wide">Concierto</span>
+                    </button>
+
+                    <!-- CI -->
+                    <button onclick="showContent('CI')" class="btn-cocipetideto bg-gradient-to-br from-purple-500 to-pink-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 border border-purple-400">
+                        <span class="text-3xl sm:text-4xl font-black font-heading tracking-wider">CI</span>
+                        <span class="text-[10px] sm:text-xs font-semibold opacity-90 uppercase tracking-wide">Cine</span>
+                    </button>
+
+                    <!-- PE -->
+                    <button onclick="showContent('PE')" class="btn-cocipetideto bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 border border-emerald-400">
+                        <span class="text-3xl sm:text-4xl font-black font-heading tracking-wider">PE</span>
+                        <span class="text-[10px] sm:text-xs font-semibold opacity-90 uppercase tracking-wide">Periodista</span>
+                    </button>
+
+                    <!-- TI -->
+                    <button onclick="showContent('TI')" class="btn-cocipetideto bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 border border-amber-400">
+                        <span class="text-3xl sm:text-4xl font-black font-heading tracking-wider">TI</span>
+                        <span class="text-[10px] sm:text-xs font-semibold opacity-90 uppercase tracking-wide">Reloj</span>
+                    </button>
+
+                    <!-- DE -->
+                    <button onclick="showContent('DE')" class="btn-cocipetideto bg-gradient-to-br from-rose-500 to-red-600 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 border border-rose-400">
+                        <span class="text-3xl sm:text-4xl font-black font-heading tracking-wider">DE</span>
+                        <span class="text-[10px] sm:text-xs font-semibold opacity-90 uppercase tracking-wide">Desayuno</span>
+                    </button>
+
+                    <!-- TO -->
+                    <button onclick="showContent('TO')" class="btn-cocipetideto bg-gradient-to-br from-cyan-500 to-blue-700 text-white rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center gap-1.5 border border-cyan-400">
+                        <span class="text-3xl sm:text-4xl font-black font-heading tracking-wider">TO</span>
+                        <span class="text-[10px] sm:text-xs font-semibold opacity-90 uppercase tracking-wide">"Tonto"</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECCIÓN 2: BOTÓN SIMULACIÓN (INCLUYE B.I.S.A) -->
+            <section>
+                <button onclick="showContent('SIMULACION')" class="btn-cocipetideto w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-black text-2xl sm:text-3xl py-4.5 px-6 rounded-2xl shadow-lg border-2 border-indigo-300 flex items-center justify-between tracking-widest font-heading">
+                    <span class="flex items-center gap-3">
+                        <i class="fa-solid fa-play-circle text-amber-300 text-2xl"></i>
+                        <span>1</span>
+                    </span>
+                    <span class="text-xs bg-amber-400 text-slate-950 px-3 py-1 rounded-full font-sans uppercase font-black shadow-sm">
+                        Ejemplo de Clase + BI.S.A.
+                    </span>
+                </button>
+            </section>
+
+            <!-- SECCIÓN 3: SECCIÓN PRÁCTICA -->
+            <section class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 p-5 sm:p-6 rounded-3xl border-3 border-amber-400/80 shadow-2xl space-y-4">
+                <div class="flex items-center justify-between border-b border-indigo-800/80 pb-3">
+                    <button onclick="showContent('PRACTICA')" class="group flex items-center gap-3 text-left">
+                        <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-xl font-black shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-black text-amber-300 font-heading tracking-wider group-hover:text-amber-200 transition-colors">
+                                2
+                            </h3>
+                            <p class="text-xs font-semibold text-slate-300">
+                                Módulos prácticos, análisis y actividades de aplicación
+                            </p>
+                        </div>
+                    </button>
+                    <button onclick="showContent('PRACTICA')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black px-4 py-2 rounded-xl transition-all shadow-md uppercase">
+                        Ver Hub Práctica
+                    </button>
+                </div>
+
+                <!-- Botones Internos de la Sección PRÁCTICA -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <!-- EQUIPO DIEGO -->
+                    <button onclick="showContent('EQUIPO_DIEGO')" class="btn-cocipetideto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black text-lg py-3.5 px-5 rounded-2xl border border-indigo-400/40 flex items-center justify-between">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-users text-amber-300"></i>
+                            <span>EQUIPO DIEGO</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
+                    </button>
+
+                    <!-- 14 PODERES MÁS PARA APRENDER -->
+                    <button onclick="showContent('PODERES_14')" class="btn-cocipetideto bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black text-lg py-3.5 px-5 rounded-2xl border border-emerald-400/40 flex items-center justify-between">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-layer-group text-amber-300"></i>
+                            <span>14 PODERES MÁS</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
+                    </button>
+
+                    <!-- CRÍTICO -->
+                    <button onclick="showContent('CRITICO')" class="btn-cocipetideto bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-black text-lg py-3.5 px-5 rounded-2xl border border-teal-400/40 flex items-center justify-between">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-lightbulb text-yellow-300"></i>
+                            <span>CRÍTICO</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
+                    </button>
+
+                    <!-- ESCRIBAN OS LEERÉ -->
+                    <button onclick="showContent('ESCRIBAN')" class="btn-cocipetideto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-lg py-3.5 px-5 rounded-2xl border border-amber-300 flex items-center justify-between">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-pen-nib text-slate-950"></i>
+                            <span>ESCRIBAN OS LEERÉ</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <div id="fullscreenTimerModal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 hidden flex flex-col justify-between p-6 sm:p-12 animate-fadeIn text-white">
+        <!-- Encabezado de la Pantalla Completa -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-3">
+                <span class="bg-amber-500 text-slate-950 font-black text-xs sm:text-sm px-3 py-1 rounded-lg uppercase tracking-wider">
+                    PODER 1: EL TIEMPO
+                </span>
+                <h3 class="text-sm sm:text-xl font-bold text-slate-300">
+                    Gimnasia Para Tu Cerebro • Gregorio Gómez Pérez
+                </h3>
+            </div>
+            <button onclick="closeTimerFullscreen()" class="bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white p-3 rounded-2xl transition-all border border-slate-700">
+                <i class="fa-solid fa-compress text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Contenido Central: Reloj Gigante y Controles -->
+        <div class="flex flex-col items-center justify-center my-auto text-center space-y-8">
+            <div class="space-y-2">
+                <p class="text-amber-400 font-extrabold uppercase tracking-widest text-sm sm:text-lg">
+                    <i class="fa-solid fa-hourglass-half mr-2"></i> Tiempo transcurrido de clase
+                </p>
+                <!-- Display Gigante -->
+                <div id="timerDisplayFullscreen" class="font-mono text-7xl sm:text-9xl font-black text-amber-300 tracking-wider bg-slate-900/90 px-8 sm:px-16 py-6 sm:py-10 rounded-3xl border-4 border-amber-400/50 shadow-2xl drop-shadow-[0_10px_35px_rgba(245,158,11,0.3)]">
+                    00:00
+                </div>
+            </div>
+
+            <!-- Botones de Control en Pantalla Completa -->
+            <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <button id="btnTimerToggleFS" onclick="toggleTimer()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xl sm:text-2xl px-8 py-4 rounded-2xl shadow-xl flex items-center gap-3 transition-transform active:scale-95 border-2 border-amber-300 cursor-pointer">
+                    <i id="timerIconFS" class="fa-solid fa-play"></i>
+                    <span id="timerLabelFS">INICIAR CONTADOR</span>
+                </button>
+
+                <button onclick="resetTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-lg px-6 py-4 rounded-2xl shadow-lg border border-slate-700 transition-all flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-rotate-right text-amber-400"></i>
+                    <span>REINICIAR</span>
+                </button>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-400 max-w-lg font-semibold">
+                “El tiempo en el aula es el recurso más valioso. ¡Aprovéchalo segundo a segundo!”
+            </p>
+        </div>
+
+        <!-- Pie de página Pantalla Completa -->
+        <div class="text-center text-xs text-slate-500 border-t border-slate-800 pt-4">
+            Pulsa el botón de comprimir arriba o haz clic en Volver para regresar a la presentación.
+        </div>
+    </div>
+
+    <!-- MODAL DE PORTADA PPA.JPG -->
+    <div id="coverModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 animate-fadeIn">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 relative shadow-2xl border-4 border-indigo-500 text-center space-y-4">
+            <button onclick="closeBookModal(); goBackToMenu();" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-xl w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div>
+                <p class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Gregorio Gómez Pérez</p>
+                <h3 class="text-xl font-black text-slate-900 font-heading">
+                    PODERES PARA APRENDER – P.P.A.
+                </h3>
+            </div>
+            
+            <div class="aspect-[3/4] bg-slate-100 rounded-2xl overflow-hidden border-2 border-slate-300 flex items-center justify-center relative shadow-xl">
+                <img id="bookCoverImg" src="ppa.jpg" alt="Poderes para Aprender - P.P.A. - Gregorio Gómez Pérez" class="w-full h-full object-contain bg-white" onerror="handleImageError(this)">
+            </div>
+            <p id="imgStatus" class="text-xs text-slate-500 font-medium">
+                Archivo de imagen vinculado: <span class="font-mono font-bold text-indigo-600">ppa.jpg</span>
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+                <button onclick="triggerFileInput()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-md">
+                    <i class="fa-solid fa-upload mr-1.5"></i> Cargar / Reemplazar ppa.jpg
+                </button>
+                <button onclick="closeBookModal(); goBackToMenu();" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black text-xs px-5 py-2.5 rounded-xl uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-arrow-left text-amber-300"></i>
+                    <span>REGRESAR AL MENÚ PRINCIPAL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-center text-xs py-4 mt-8 border-t border-slate-800">
+        <p class="font-semibold text-slate-300">Poderes para Aprender &copy; Gimnasia para tu Cerebro</p>
+        <p class="text-[10px] text-slate-500 mt-1">Presentación Interactiva Oficial • Gregorio Gómez Pérez</p>
+    </footer>
+
+    <script>
+        // --- 1. RELOJ EN TIEMPO REAL ---
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const liveClockEl = document.getElementById('liveClock');
+            if (liveClockEl) {
+                liveClockEl.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- 2. CONTADOR DE TIEMPO (PODER 1: EL TIEMPO) ---
+        let timerInterval = null;
+        let timerSeconds = 0;
+        let timerRunning = false;
+
+        function toggleTimer() {
+            const btnIcon = document.getElementById('timerIcon');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const timerDisplayFS = document.getElementById('timerDisplayFullscreen');
+            const btnIconFS = document.getElementById('timerIconFS');
+            const timerLabelFS = document.getElementById('timerLabelFS');
+
+            if (!timerRunning) {
+                timerRunning = true;
+                if (btnIcon) btnIcon.className = "fa-solid fa-pause text-amber-200 text-base sm:text-xl";
+                if (btnIconFS) btnIconFS.className = "fa-solid fa-pause";
+                if (timerLabelFS) timerLabelFS.textContent = "PAUSAR CONTADOR";
+                
+                timerInterval = setInterval(() => {
+                    timerSeconds++;
+                    const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+                    const secs = String(timerSeconds % 60).padStart(2, '0');
+                    const formatted = `${mins}:${secs}`;
+                    if (timerDisplay) timerDisplay.textContent = formatted;
+                    if (timerDisplayFS) timerDisplayFS.textContent = formatted;
+                }, 1000);
+            } else {
+                timerRunning = false;
+                if (btnIcon) btnIcon.className = "fa-solid fa-play text-amber-200 text-base sm:text-xl";
+                if (btnIconFS) btnIconFS.className = "fa-solid fa-play";
+                if (timerLabelFS) timerLabelFS.textContent = "CONTINUAR CONTADOR";
+                clearInterval(timerInterval);
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timerSeconds = 0;
+            const timerDisplay = document.getElementById('timerDisplay');
+            const timerDisplayFS = document.getElementById('timerDisplayFullscreen');
+            if (timerDisplay) timerDisplay.textContent = "00:00";
+            if (timerDisplayFS) timerDisplayFS.textContent = "00:00";
+
+            const btnIcon = document.getElementById('timerIcon');
+            const btnIconFS = document.getElementById('timerIconFS');
+            const timerLabelFS = document.getElementById('timerLabelFS');
+            if (btnIcon) btnIcon.className = "fa-solid fa-play text-amber-200 text-base sm:text-xl";
+            if (btnIconFS) btnIconFS.className = "fa-solid fa-play";
+            if (timerLabelFS) timerLabelFS.textContent = "INICIAR CONTADOR";
+        }
+
+        function openTimerFullscreen() {
+            const modal = document.getElementById('fullscreenTimerModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeTimerFullscreen() {
+            const modal = document.getElementById('fullscreenTimerModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // --- 3. MODAL DE PORTADA PPA.JPG ---
+        function openBookModal() {
+            const modal = document.getElementById('coverModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeBookModal() {
+            const modal = document.getElementById('coverModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function triggerFileInput() {
+            const input = document.getElementById('coverFileInput');
+            if (input) input.click();
+        }
+
+        function handleCoverUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const customCoverUrl = e.target.result;
+                    const imgEl = document.getElementById('bookCoverImg');
+                    if (imgEl) imgEl.src = customCoverUrl;
+                    
+                    const imgStatus = document.getElementById('imgStatus');
+                    if (imgStatus) {
+                        imgStatus.innerHTML = `Imagen cargada: <span class="font-mono font-bold text-emerald-600">${file.name}</span>`;
+                    }
+
+                    closeBookModal();
+                    goBackToMenu();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleImageError(img) {
+            img.onerror = null;
+            const svgCover = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%"><rect width="600" height="800" fill="%23f6f1eb"/><text x="300" y="110" font-family="sans-serif" font-size="34" font-weight="bold" fill="%23222222" text-anchor="middle">Gregorio Gómez Pérez</text><text x="300" y="210" font-family="sans-serif" font-size="52" font-weight="900" fill="%23111111" text-anchor="middle">PODERES</text><text x="300" y="270" font-family="sans-serif" font-size="38" font-weight="900" fill="%23111111" text-anchor="middle">PARA APRENDER</text><text x="300" y="340" font-family="sans-serif" font-size="50" font-weight="900" fill="%23111111" text-anchor="middle">– P.P.A. –</text><rect x="80" y="380" width="440" height="250" fill="%23ffffff" rx="12" stroke="%23dddddd" stroke-width="2"/><text x="300" y="500" font-family="sans-serif" font-size="22" font-weight="bold" fill="%23666666" text-anchor="middle">📷 [Imagen ppa.jpg]</text><text x="300" y="530" font-family="sans-serif" font-size="16" fill="%23888888" text-anchor="middle">Coloca el archivo ppa.jpg en la misma carpeta</text><text x="300" y="680" font-family="sans-serif" font-size="30" font-weight="bold" fill="%23e11d48" text-anchor="middle">“Gimnasia Para tu Cerebro”</text><text x="300" y="750" font-family="sans-serif" font-size="18" font-weight="bold" fill="%23333333" text-anchor="middle">Círculo Rojo EDITORIAL</text></svg>`;
+            img.src = svgCover;
+        }
+
+        // --- 4. GESTOR DE PANTALLA COMPLETA Y CONTENIDOS ---
+        function showContent(key) {
+            const headerTitleSection = document.getElementById('headerTitleSection');
+            const mainMenu = document.getElementById('mainMenu');
+            const fullPowerScreen = document.getElementById('fullPowerScreen');
+            const fullPowerContent = document.getElementById('fullPowerContent');
+
+            if (headerTitleSection) headerTitleSection.classList.add('hidden');
+            if (mainMenu) mainMenu.classList.add('hidden');
+            if (fullPowerScreen) fullPowerScreen.classList.remove('hidden');
+
+            let html = '';
+
+            switch (key) {
+                case 'CO':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-blue-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-blue-100 text-blue-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Poder CO</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Efecto Concierto: Preparación Previa</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                <div class="md:col-span-2 rounded-3xl overflow-hidden shadow-2xl border-4 border-blue-400 h-64 sm:h-80 relative">
+                                    <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80" 
+                                         alt="Concierto" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-4">
+                                        <span class="text-white font-bold text-xs sm:text-sm">P.P.A. — Gimnasia Para Tu Cerebro</span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 space-y-4 bg-gradient-to-br from-blue-50 to-indigo-50 p-6 sm:p-8 rounded-3xl border-2 border-blue-200 shadow-md">
+                                    <p class="text-lg sm:text-xl font-extrabold text-blue-950 flex items-center gap-3">
+                                        <i class="fa-solid fa-book-open-reader text-blue-600 text-2xl"></i>
+                                        Llevar la lección leída para un aprendizaje óptimo
+                                    </p>
+                                    
+                                    <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-music text-blue-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Analogía musical:</strong> Un concierto se disfruta exponencialmente más cuando se conoce de antemano la letra y melodía de las canciones.</span>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-brain text-purple-600 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Zona de Desarrollo Próximo:</strong> Facilita construir nuevos conceptos sobre bases e impresiones previas ya preparadas en la mente.</span>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Optimización del tiempo:</strong> Elimina la necesidad de pasar horas intentando descifrar desde cero lo que no se entendió en la clase.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'CI':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-purple-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-purple-100 text-purple-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Poder CI</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Efecto Cine: Silencio y Respeto</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-purple-700 bg-purple-50 px-3 py-1.5 rounded-xl border border-purple-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                <div class="md:col-span-2 rounded-3xl overflow-hidden shadow-2xl border-4 border-purple-400 h-64 sm:h-80 relative">
+                                    <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80" 
+                                         alt="Cine" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-4">
+                                        <span class="text-white font-bold text-xs sm:text-sm">P.P.A. — Gimnasia Para Tu Cerebro</span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 space-y-4 bg-gradient-to-br from-purple-50 to-pink-50 p-6 sm:p-8 rounded-3xl border-2 border-purple-200 shadow-md">
+                                    <p class="text-lg sm:text-xl font-extrabold text-purple-950 flex items-center gap-3">
+                                        <i class="fa-solid fa-film text-purple-600 text-2xl"></i>
+                                        Comunicación no verbal, silencio y concentración compartida
+                                    </p>
+                                    
+                                    <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-video text-purple-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Respeto en el aula:</strong> Basado en el comportamiento considerado y atento de los espectadores durante una función de cine.</span>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-eye text-pink-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Complicidad no verbal:</strong> Gestos y miradas sutiles para indicar amablemente a los compañeros guardar silencio.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'PE':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-emerald-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Poder PE</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Efecto Periodista: Actitud Investigadora</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                <div class="md:col-span-2 rounded-3xl overflow-hidden shadow-2xl border-4 border-emerald-400 h-64 sm:h-80 relative">
+                                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80" 
+                                         alt="Periodista" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-4">
+                                        <span class="text-white font-bold text-xs sm:text-sm">P.P.A. — Gimnasia Para Tu Cerebro</span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 space-y-4 bg-gradient-to-br from-emerald-50 to-teal-50 p-6 sm:p-8 rounded-3xl border-2 border-emerald-200 shadow-md">
+                                    <p class="text-lg sm:text-xl font-extrabold text-emerald-950 flex items-center gap-3">
+                                        <i class="fa-solid fa-newspaper text-emerald-600 text-2xl"></i>
+                                        Cuestionamiento activo y notas estratégicas
+                                    </p>
+                                    
+                                    <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-magnifying-glass text-teal-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Preguntas con propósito:</strong> Interrogar constructivamente el tema para fijar ideas clave en clase.</span>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-pen-to-square text-indigo-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Apuntes esquemáticos:</strong> Tomar notas ágiles y sintéticas como un profesional de prensa.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'TI':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-amber-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-amber-100 text-amber-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Poder TI</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Efecto Tiempo: Gestión Eficiente</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                <div class="md:col-span-2 rounded-3xl overflow-hidden shadow-2xl border-4 border-amber-400 h-64 sm:h-80 relative">
+                                    <img src="https://images.unsplash.com/photo-1508962914676-134849a727f0?auto=format&fit=crop&w=1200&q=80" 
+                                         alt="Reloj" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-4">
+                                        <span class="text-white font-bold text-xs sm:text-sm">P.P.A. — Gimnasia Para Tu Cerebro</span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 space-y-4 bg-gradient-to-br from-amber-50 to-orange-50 p-6 sm:p-8 rounded-3xl border-2 border-amber-200 shadow-md">
+                                    <p class="text-lg sm:text-xl font-extrabold text-amber-950 flex items-center gap-3">
+                                        <i class="fa-solid fa-clock text-amber-600 text-2xl"></i>
+                                        Aprovechamiento directo de cada minuto de clase
+                                    </p>
+                                    <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-stopwatch text-amber-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Conciencia del tiempo:</strong> Monitorear la marcha de la sesión para evitar distracciones y liberar la tarde.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'DE':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-rose-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-rose-100 text-rose-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Poder DE</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Efecto Desayuno: Combustible Mental</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                <div class="md:col-span-2 rounded-3xl overflow-hidden shadow-2xl border-4 border-rose-400 h-64 sm:h-80 relative">
+                                    <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=1200&q=80" 
+                                         alt="Desayuno" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-4">
+                                        <span class="text-white font-bold text-xs sm:text-sm">P.P.A. — Gimnasia Para Tu Cerebro</span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 space-y-4 bg-gradient-to-br from-rose-50 to-orange-50 p-6 sm:p-8 rounded-3xl border-2 border-rose-200 shadow-md">
+                                    <p class="text-lg sm:text-xl font-extrabold text-rose-950 flex items-center gap-3">
+                                        <i class="fa-solid fa-mug-hot text-rose-600 text-2xl"></i>
+                                        Nutrición equilibrada para activar el rendimiento matutino
+                                    </p>
+                                    <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-bolt text-amber-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Energía cerebral:</strong> El cerebro necesita el combustible adecuado por la mañana para sostener la concentración y evitar la fatiga.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'TO':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-cyan-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-cyan-100 text-cyan-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Poder TO</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Efecto "Tonto": Aprovechamiento Total</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-cyan-700 bg-cyan-50 px-3 py-1.5 rounded-xl border border-cyan-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                <div class="md:col-span-2 rounded-3xl overflow-hidden shadow-2xl border-4 border-cyan-400 h-64 sm:h-80 relative">
+                                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" 
+                                         alt="Aprovechamiento" 
+                                         class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex items-end p-4">
+                                        <span class="text-white font-bold text-xs sm:text-sm">P.P.A. — Gimnasia Para Tu Cerebro</span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-3 space-y-4 bg-gradient-to-br from-cyan-50 to-blue-50 p-6 sm:p-8 rounded-3xl border-2 border-cyan-200 shadow-md">
+                                    <p class="text-lg sm:text-xl font-extrabold text-cyan-950 flex items-center gap-3">
+                                        <i class="fa-solid fa-triangle-exclamation text-cyan-600 text-2xl"></i>
+                                        No desperdiciar las horas lectivas matutinas
+                                    </p>
+                                    <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                        <li class="flex items-start gap-3">
+                                            <i class="fa-solid fa-lightbulb text-amber-500 text-lg mt-1 shrink-0"></i>
+                                            <span><strong>Conciencia lúcida:</strong> Llamada de atención para evitar la inacción en el aula y no duplicar esfuerzos innecesarios por la tarde.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'SIMULACION':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-indigo-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Práctica en Vivo</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Protocolo de Entrada y Técnica BI.S.A.</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-3xl border-2 border-blue-200 shadow-md space-y-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black text-xl shadow-md">BI</div>
+                                    <h4 class="text-xl font-black text-blue-950">BIEN SENTADO</h4>
+                                    <p class="text-sm text-slate-700 font-medium">Postura ergonómica correcta, espalda apoyada en el respaldo y disposición física para la actividad mental.</p>
+                                </div>
+
+                                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-3xl border-2 border-purple-200 shadow-md space-y-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-purple-600 text-white flex items-center justify-center font-black text-xl shadow-md">S</div>
+                                    <h4 class="text-xl font-black text-purple-950">SILENCIO</h4>
+                                    <p class="text-sm text-slate-700 font-medium">Atención acústica total y respeto absoluto hacia el espacio de explicación y trabajo de los compañeros.</p>
+                                </div>
+
+                                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-3xl border-2 border-emerald-200 shadow-md space-y-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-xl shadow-md">A</div>
+                                    <h4 class="text-xl font-black text-emerald-950">ATENTO</h4>
+                                    <p class="text-sm text-slate-700 font-medium">Enfoque láser y participación activa con el material listo y bolígrafo en mano, listos para aprender.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'GIMNASIA':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-emerald-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Filosofía P.P.A.</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Aprender es Gimnasia Mental frente a la I.A.</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-8 rounded-3xl border-3 border-amber-400 shadow-2xl space-y-6">
+                                <p class="text-lg sm:text-2xl font-bold text-amber-300 leading-relaxed">
+                                    “En la era de la Inteligencia Artificial, entrenar y potenciar nuestra propia inteligencia humana a través de la gimnasia mental es la clave insustituible del éxito personal y profesional.”
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-indigo-800/80">
+                                    <div class="space-y-2">
+                                        <h4 class="font-extrabold text-amber-400 text-base uppercase tracking-wider"><i class="fa-solid fa-brain mr-2"></i> Cerebro Activo</h4>
+                                        <p class="text-sm text-slate-300">Cada técnica del libro actúa como un ejercicio específico para fortalecer las conexiones neuronales y optimizar el aprendizaje.</p>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <h4 class="font-extrabold text-amber-400 text-base uppercase tracking-wider"><i class="fa-solid fa-robot mr-2"></i> Más Allá de la IA</h4>
+                                        <p class="text-sm text-slate-300">La máquina procesa datos, pero la mente humana entrenada comprende, crea, colabora y lidera con criterio propio.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'PRACTICA':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-indigo-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Hub de Práctica</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Módulos de Aplicación y Profundización</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div onclick="showContent('EQUIPO_DIEGO')" class="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-3xl border-2 border-indigo-300 cursor-pointer hover:shadow-lg transition-all space-y-2">
+                                    <div class="text-indigo-600 text-2xl"><i class="fa-solid fa-users"></i></div>
+                                    <h4 class="text-xl font-black text-indigo-950">EQUIPO DIEGO</h4>
+                                    <p class="text-sm text-slate-700">De curso burocrático a equipo cohesionado.</p>
+                                </div>
+
+                                <div onclick="showContent('PODERES_14')" class="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-3xl border-2 border-emerald-300 cursor-pointer hover:shadow-lg transition-all space-y-2">
+                                    <div class="text-emerald-600 text-2xl"><i class="fa-solid fa-layer-group"></i></div>
+                                    <h4 class="text-xl font-black text-emerald-950">14 PODERES MÁS</h4>
+                                    <p class="text-sm text-slate-700">Sociedad (SO.PA.EM.JU.DO), Instituto (GRA.P.E.ESAS.HABAS) y Profesores (VE.O.O.COCO).</p>
+                                </div>
+
+                                <div onclick="showContent('CRITICO')" class="bg-gradient-to-br from-teal-50 to-cyan-50 p-6 rounded-3xl border-2 border-teal-300 cursor-pointer hover:shadow-lg transition-all space-y-2">
+                                    <div class="text-teal-600 text-2xl"><i class="fa-solid fa-lightbulb"></i></div>
+                                    <h4 class="text-xl font-black text-teal-950">CRÍTICO</h4>
+                                    <p class="text-sm text-slate-700">Análisis y reflexión profunda sobre los métodos educativos.</p>
+                                </div>
+
+                                <div onclick="showContent('ESCRIBAN')" class="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-3xl border-2 border-amber-300 cursor-pointer hover:shadow-lg transition-all space-y-2">
+                                    <div class="text-amber-600 text-2xl"><i class="fa-solid fa-pen-nib"></i></div>
+                                    <h4 class="text-xl font-black text-amber-950">ESCRIBAN OS LEERÉ</h4>
+                                    <p class="text-sm text-slate-700">Participación activa y compromiso de lectura.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'EQUIPO_DIEGO':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-indigo-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-indigo-100 text-indigo-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Práctica — Cohesión</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">De 'Curso' a 'Equipo' (EQUIPO DIEGO)</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 sm:p-8 rounded-3xl border-2 border-indigo-200 shadow-md space-y-4">
+                                <p class="text-lg font-bold text-indigo-950">
+                                    Transformar el aula en un verdadero equipo donde nadie se queda atrás y todos avanzan unidos bajo una misma meta.
+                                </p>
+                                <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                    <li class="flex items-start gap-3">
+                                        <i class="fa-solid fa-check text-indigo-600 mt-1"></i>
+                                        <span><strong>Curso vs Equipo:</strong> Pasar de la burocracia de un grupo escolar a la colaboración y apoyo mutuo de un equipo deportivo.</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <i class="fa-solid fa-check text-indigo-600 mt-1"></i>
+                                        <span><strong>Votación y Delegado:</strong> Decisión participativa a mano alzada para elegir un delegado enfocado en hacer que la clase funcione unida.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'PODERES_14':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-emerald-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Práctica — Tetralogía P.P.A.</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">14 Poderes Más (Sociedad, Instituto y Profesores)</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- Sociedad -->
+                                <div class="bg-white p-6 rounded-3xl border-2 border-emerald-300 shadow-md space-y-3">
+                                    <span class="text-xs font-black bg-emerald-600 text-white px-3 py-1 rounded-full uppercase">SO.PA.EM.JU.DO</span>
+                                    <h4 class="text-xl font-black text-emerald-950">5 Poderes de la Sociedad</h4>
+                                </div>
+
+                                <!-- Instituto -->
+                                <div class="bg-white p-6 rounded-3xl border-2 border-teal-300 shadow-md space-y-3">
+                                    <span class="text-xs font-black bg-teal-600 text-white px-3 py-1 rounded-full uppercase">GRA.P.E.ESAS.HABAS</span>
+                                    <h4 class="text-xl font-black text-teal-950">5 Poderes del Instituto</h4>
+                                </div>
+
+                                <!-- Profesores -->
+                                <div class="bg-white p-6 rounded-3xl border-2 border-blue-300 shadow-md space-y-3">
+                                    <span class="text-xs font-black bg-blue-600 text-white px-3 py-1 rounded-full uppercase">VE.O.O.COCO</span>
+                                    <h4 class="text-xl font-black text-blue-950">4 Poderes de los Profesores</h4>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'CRITICO':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-teal-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-teal-100 text-teal-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Práctica — Reflexión</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Pensamiento Crítico en el Aula</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1.5 rounded-xl border border-teal-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-teal-50 to-cyan-50 p-6 sm:p-8 rounded-3xl border-2 border-teal-200 shadow-md space-y-4">
+                                <p class="text-lg font-bold text-teal-950">
+                                    Analizar la realidad educativa para proponer soluciones basadas en neuroeducación y esfuerzo consciente.
+                                </p>
+                                <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                    <li class="flex items-start gap-3">
+                                        <i class="fa-solid fa-lightbulb text-teal-600 mt-1"></i>
+                                        <span>Cuestionar los métodos pasivos y fomentar la gimnasia cerebral activa frente a la dependencia tecnológica pasiva.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'ESCRIBAN':
+                    html = `
+                        <div class="space-y-6 w-full text-left animate-fadeIn my-auto">
+                            <div class="flex items-center justify-between border-b-2 border-amber-200 pb-4">
+                                <div>
+                                    <span class="inline-block bg-amber-100 text-amber-800 text-xs sm:text-sm font-black px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">Práctica — Participación</span>
+                                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 font-heading">Escriban Os Leeré</h2>
+                                </div>
+                                <span class="hidden sm:block text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
+                                    Gregorio Gómez Pérez
+                                </span>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-6 sm:p-8 rounded-3xl border-2 border-amber-200 shadow-md space-y-4">
+                                <p class="text-lg font-bold text-amber-950">
+                                    Canal directo de comunicación, redacción de reflexiones y puesta en común de aprendizajes con el autor.
+                                </p>
+                                <ul class="space-y-3 text-sm sm:text-base text-slate-800 font-medium">
+                                    <li class="flex items-start gap-3">
+                                        <i class="fa-solid fa-pen-nib text-amber-600 mt-1"></i>
+                                        <span>Fomentar la expresión escrita y el intercambio de experiencias sobre los 20 efectos del libro.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            if (fullPowerContent) fullPowerContent.innerHTML = html;
+        }
+
+        function goBackToMenu() {
+            const headerTitleSection = document.getElementById('headerTitleSection');
+            const mainMenu = document.getElementById('mainMenu');
+            const fullPowerScreen = document.getElementById('fullPowerScreen');
+
+            if (headerTitleSection) headerTitleSection.classList.remove('hidden');
+            if (mainMenu) mainMenu.classList.remove('hidden');
+            if (fullPowerScreen) fullPowerScreen.classList.add('hidden');
+        }
+    </script>
+
+</body>
+</html>
